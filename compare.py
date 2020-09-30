@@ -9,12 +9,8 @@ import matplotlib.pyplot as plt
 
 cmp_size = 100
 
-#image_dir = "spirited_away"
-#dest_dir = "spirited_away_unique"
-
 image_dir = sys.argv[1]
 dest_dir = sys.argv[2]
-
 
 prev_image_name = ""
 prev_image = ""
@@ -33,19 +29,12 @@ for f in range(0,10000):
     score, ssim = structural_similarity(img_a, img_b, full=True)
     if score<0.995:
         print("Keeping unique image with score: {}".format(score))
-        #shutil.copy(prev_image, "{}/{}".format(dest_dir, prev_image_name))
     else:
         shutil.copy(prev_image, "{}/{}".format(dest_dir, prev_image_name))
         shutil.copy(this_image, "{}/{}".format(dest_dir, prev_image_name))
-#        print("Skipping {}".format(prev_image_name))
     plt.imshow(ssim,aspect="auto")
     plt.savefig("{:08d}_diff.png".format(f))
     prev_image_name = this_image_name
     prev_image = this_image
-
-
-#plt.imshow(ssim,aspect="auto")
-#plt.
-#plt.show()
 
 
