@@ -32,7 +32,7 @@ logger.setLevel(logging.INFO)
 streamHandler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 streamHandler.setFormatter(formatter)
-logger.addHandler(streamHandler)
+#logger.addHandler(streamHandler)
 
 logger.info("VSMP Starting Up...")
 logger.info("Reading vsmp.config")
@@ -52,7 +52,7 @@ curr_frame_file = video_config['FrameCounterFile']
 epd = epd7in5_V2.EPD()
 logger.info("Initing...")
 epd.init()
-logger.info("Clearing screen...")
+logger.info("Clear screen...")
 epd.Clear()
 logger.info("Finding Images...")
 
@@ -67,15 +67,18 @@ if curr_frame_file:
         logger.info("Frame located, skipping {} frames".format(str(index)))
         image_files = image_files[index:]
     else:
-        logger.warn("Frame not found, starting movie over")
+        logger.warning("Frame not found, starting movie over")
 
 for img in image_files:
     logger.info(img)
     # Open the saved frame in PIL
     pil_im = Image.open(image_dir+"/"+img)
+    # Write as current frame
+    curr_frame = Path(curr_frame_file).write_text(img)
     # display the image
     epd.display(epd.getbuffer(pil_im))
     logger.info("sleeping...")
+    # Exit for now to make testing easier
     exit()
     time.sleep(30)
 epd.sleep()
