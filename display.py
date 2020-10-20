@@ -28,10 +28,10 @@ def playback_settings(framecount, days, sleep_sec):
     return (adjusted_sleep_sec, frames_to_skip)
 
 logger = logging.getLogger("vsmp")
-logger.setLevel(logging.INFO)
-streamHandler = logging.StreamHandler()
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-streamHandler.setFormatter(formatter)
+#logger.setLevel(logging.INFO)
+#streamHandler = logging.StreamHandler()
+#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#streamHandler.setFormatter(formatter)
 #logger.addHandler(streamHandler)
 
 logger.info("VSMP Starting Up...")
@@ -57,6 +57,8 @@ epd.Clear()
 logger.info("Finding Images...")
 
 # Check if there is a current frame
+
+logger.info(image_files)
 
 if curr_frame_file:
     curr_frame = Path(curr_frame_file).read_text()
