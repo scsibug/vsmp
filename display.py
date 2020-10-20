@@ -9,11 +9,14 @@ import time
 import glob
 import os
 from pathlib import Path
-    
+
+
+#def sleep_time(min_sleep, min_frames, curr_frame, next_frame)
+
 def playback_settings(framecount, days, sleep_sec):
     """Determine how many frames to skip based on days for total movie
        playtime and sleep time between screen refreshes.
-       Returns tuple of (sec-to-sleep, frames-to-skip)
+       Returns tuple of (sec-to-sleep, frames-to-skip).
     """
     sec_to_play = days * 24 * 60 * 60
     frames_to_display = sec_to_play / sleep_sec
@@ -52,9 +55,6 @@ epd.Clear()
 logging.info("Finding Images...")
 
 # Check if there is a current frame
-
-logging.info(image_files)
-
 if curr_frame_file:
     curr_frame = Path(curr_frame_file).read_text()
     curr_frame = curr_frame.replace('\n', '')
@@ -66,7 +66,15 @@ if curr_frame_file:
     else:
         logging.warning("Frame not found, starting movie over")
 
+skipcount = 0
 for img in image_files:
+    # If there is a need to skip frames, do that now
+    if skipcount > 0:
+        logging.info("Skipping frame {}".format(img))
+        skipcount =- 1
+        continue
+    # reset skip counter
+    skipcount = frames_to_skip
     logging.info(img)
     # Open the saved frame in PIL
     pil_im = Image.open(image_dir+"/"+img)
@@ -74,10 +82,8 @@ for img in image_files:
     curr_frame = Path(curr_frame_file).write_text(img)
     # display the image
     epd.display(epd.getbuffer(pil_im))
-    logging.info("sleeping...")
-    # Exit for now to make testing easier
-    exit()
-    time.sleep(30)
+    logging.info("sleeping for {} seconds".format(str(sec_to_sleep)))
+    time.sleep(sec_to_sleep)
 epd.sleep()
 epd7in5.epdconfig.module_exit()
 exit()    
