@@ -7,6 +7,7 @@ import logging
 import sys
 import time
 import glob
+import os
 
 def playback_settings(framecount, days, sleep_sec):
     """Determine how many frames to skip based on days for total movie
