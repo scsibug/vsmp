@@ -8,7 +8,8 @@ import sys
 import time
 import glob
 import os
-
+from pathlib import Path
+    
 def playback_settings(framecount, days, sleep_sec):
     """Determine how many frames to skip based on days for total movie
        playtime and sleep time between screen refreshes.
@@ -56,10 +57,13 @@ epd.Clear()
 logger.info("Finding Images...")
 
 # Check if there is a current frame
+
 if curr_frame_file:
-    logger.info("Current frame is {}, attempting resume...".format(curr_frame_file))
+    curr_frame = Path(curr_frame_file).read_text()
+    curr_frame = curr_frame.replace('\n', '')
+    logger.info("Current frame is {}, attempting resume...".format(curr_frame))
     if curr_frame_file in image_files:
-        index = image_files.index(curr_frame_file)
+        index = image_files.index(curr_frame)
         logger.info("Frame located, skipping {} frames".format(str(index)))
         image_files = image_files[index:]
     else:
