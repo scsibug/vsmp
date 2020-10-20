@@ -27,15 +27,9 @@ def playback_settings(framecount, days, sleep_sec):
         frames_to_skip = 0
     return (adjusted_sleep_sec, frames_to_skip)
 
-logger = logging.getLogger("vsmp")
-#logger.setLevel(logging.INFO)
-#streamHandler = logging.StreamHandler()
-#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#streamHandler.setFormatter(formatter)
-#logger.addHandler(streamHandler)
-
-logger.info("VSMP Starting Up...")
-logger.info("Reading vsmp.config")
+logging.basicConfig(level=logging.DEBUG)
+logging.info("VSMP Starting Up...")
+logging.info("Reading vsmp.config")
 config = configparser.ConfigParser()
 config.read('vsmp.config')
 video_config = config['VIDEO']
@@ -50,36 +44,36 @@ curr_frame_file = video_config['FrameCounterFile']
 (sec_to_sleep, frames_to_skip) = playback_settings(image_file_count, runtime_days, sleep_min*60)
 
 epd = epd7in5_V2.EPD()
-logger.info("Initing...")
+logging.info("Initing...")
 epd.init()
-logger.info("Clear screen...")
+logging.info("Clear screen...")
 epd.Clear()
-logger.info("Finding Images...")
+logging.info("Finding Images...")
 
 # Check if there is a current frame
 
-logger.info(image_files)
+logging.info(image_files)
 
 if curr_frame_file:
     curr_frame = Path(curr_frame_file).read_text()
     curr_frame = curr_frame.replace('\n', '')
-    logger.info("Current frame is {}, attempting resume...".format(curr_frame))
+    logging.info("Current frame is {}, attempting resume...".format(curr_frame))
     if curr_frame in image_files:
         index = image_files.index(curr_frame)
-        logger.info("Frame located, skipping {} frames".format(str(index)))
+        logging.info("Frame located, skipping {} frames".format(str(index)))
         image_files = image_files[index:]
     else:
-        logger.warning("Frame not found, starting movie over")
+        logging.warning("Frame not found, starting movie over")
 
 for img in image_files:
-    logger.info(img)
+    logging.info(img)
     # Open the saved frame in PIL
     pil_im = Image.open(image_dir+"/"+img)
     # Write as current frame
     curr_frame = Path(curr_frame_file).write_text(img)
     # display the image
     epd.display(epd.getbuffer(pil_im))
-    logger.info("sleeping...")
+    logging.info("sleeping...")
     # Exit for now to make testing easier
     exit()
     time.sleep(30)
