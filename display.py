@@ -35,7 +35,7 @@ config.read('vsmp.config')
 video_config = config['VIDEO']
 image_dir = video_config['FileDirectory']
 # TODO: make sure this is a valid directory, with > 0 files
-image_files = list(map(os.path.basename, glob.glob(image_dir+'/*.png')))
+image_files = sort(list(map(os.path.basename, glob.glob(image_dir+'/*.png'))))
 image_file_count = len(image_files)
 runtime_days = int(video_config['RuntimeDays'])
 sleep_min = int(video_config['ScreenSleepMinutes'])
