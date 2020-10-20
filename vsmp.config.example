@@ -1,0 +1,5 @@
+[VIDEO]
+FileDirectory = moviedir
+RuntimeDays = 30
+ScreenSleepMinutes = 10
+FrameCounterFile = curr_frame.txt
