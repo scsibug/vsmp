@@ -39,10 +39,11 @@ config.read('vsmp.config')
 video_config = config['VIDEO']
 image_dir = video_config['FileDirectory']
 # TODO: make sure this is a valid directory, with > 0 files
-image_files = sorted(glob.glob(image_dir+'/*.png'))
+image_files = list(map(os.path.basename, glob.glob(image_dir+'/*.png')))
 image_file_count = len(image_files)
 runtime_days = int(video_config['RuntimeDays'])
 sleep_min = int(video_config['ScreenSleepMinutes'])
+curr_frame_file = video_config['FrameCounterFile']
 # Compute how long to display an image in seconds.
 (sec_to_sleep, frames_to_skip) = playback_settings(image_file_count, runtime_days, sleep_min*60)
 
@@ -52,6 +53,16 @@ epd.init()
 logger.info("Clearing screen...")
 epd.Clear()
 logger.info("Finding Images...")
+
+# Check if there is a current frame
+if curr_frame_file:
+    logger.info("Current frame is {}, attempting resume...".format(curr_frame_file))
+    if curr_frame_file in image_files:
+        index = image_files.index(curr_frame_file)
+        logger.info("Frame located, skipping {} frames".format(str(index)))
+        image_files = image_files[index:]
+    else:
+        logger.warn("Frame not found, starting movie over")
 
 for img in image_files:
     logger.info(img)
