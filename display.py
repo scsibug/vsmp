@@ -72,7 +72,7 @@ if curr_frame_file:
 for img in image_files:
     logger.info(img)
     # Open the saved frame in PIL
-    pil_im = Image.open(img)
+    pil_im = Image.open(image_dir+"/"+img)
     # display the image
     epd.display(epd.getbuffer(pil_im))
     logger.info("sleeping...")
