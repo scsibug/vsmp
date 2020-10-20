@@ -6,7 +6,7 @@ Description=Very Slow Movie Player
 Type=simple
 Restart=always
 RestartSec=120
-ExecStart=python3 /home/pi/display.py
+ExecStart=python3 /home/pi/vsmp/display.py
 
 [Install]
 WantedBy=multi-user.target
