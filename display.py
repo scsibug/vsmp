@@ -59,7 +59,7 @@ logger.info("Finding Images...")
 # Check if there is a current frame
 
 if curr_frame_file:
-    curr_frame = Path(curr_frame_file).read_text()
+    curr_frame = Path(image_dir+"/"+curr_frame_file).read_text()
     curr_frame = curr_frame.replace('\n', '')
     logger.info("Current frame is {}, attempting resume...".format(curr_frame))
     if curr_frame_file in image_files:
