@@ -1,0 +1,12 @@
+# Place in /etc/systemd/system/vsmp.service
+[Unit]
+Description=Very Slow Movie Player
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=120
+ExecStart=python3 /home/pi/display.py
+
+[Install]
+WantedBy=multi-user.target
