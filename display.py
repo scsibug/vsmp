@@ -62,7 +62,7 @@ if curr_frame_file:
     curr_frame = Path(curr_frame_file).read_text()
     curr_frame = curr_frame.replace('\n', '')
     logger.info("Current frame is {}, attempting resume...".format(curr_frame))
-    if curr_frame_file in image_files:
+    if curr_frame in image_files:
         index = image_files.index(curr_frame)
         logger.info("Frame located, skipping {} frames".format(str(index)))
         image_files = image_files[index:]
