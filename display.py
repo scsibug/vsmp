@@ -70,7 +70,7 @@ skipcount = 0
 for img in image_files:
     # If there is a need to skip frames, do that now
     if skipcount > 1:
-        logging.info("Skipping frame {}".format(img))
+        logging.info("Skipcount {}, skipping frame {}".format(skipcount, img))
         skipcount =- 1
         continue
     # increment skip counter
