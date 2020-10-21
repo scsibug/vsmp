@@ -55,7 +55,7 @@ epd.Clear()
 logging.info("Finding Images...")
 
 # Check if there is a current frame
-if curr_frame_file:
+if curr_frame_file and os.path.exists(curr_frame_file):
     curr_frame = Path(curr_frame_file).read_text()
     curr_frame = curr_frame.replace('\n', '')
     logging.info("Current frame is {}, attempting resume...".format(curr_frame))
