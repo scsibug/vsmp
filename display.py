@@ -84,6 +84,11 @@ for img in image_files:
     epd.display(epd.getbuffer(pil_im))
     logging.info("sleeping for {} seconds".format(str(sec_to_sleep)))
     time.sleep(sec_to_sleep)
+
+# Remove the frame counter, so we reset next time
+os.remove(curr_frame_file)
+
+# Put the screen to sleep and exit
 epd.sleep()
 epd7in5.epdconfig.module_exit()
 exit()    
