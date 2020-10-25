@@ -71,10 +71,10 @@ for img in image_files:
     # If there is a need to skip frames, do that now
     if skipcount > 1:
         logging.info("Skipcount {}, skipping frame {}".format(skipcount, img))
-        skipcount =- 1
+        skipcount -= 1
         continue
     # increment skip counter
-    skipcount =+ frames_to_skip
+    skipcount += frames_to_skip
     logging.info(img)
     # Open the saved frame in PIL
     pil_im = Image.open(image_dir+"/"+img)
