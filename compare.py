@@ -2,7 +2,10 @@ import sys, os
 import shutil
 from skimage.transform import resize
 from imageio import imread, imwrite
-from transforms import RGBTransform 
+
+#from transforms import RGBTransform
+# See https://gist.github.com/wchargin/d8eb0cbafc4d4479d004
+
 from skimage.metrics import structural_similarity
 from PIL import Image
 import numpy as np

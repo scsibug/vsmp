@@ -49,7 +49,7 @@ $ mkdir unique_frames
 $ python3 compare.py frames unique_frames 0.99
 ```
 
-The list of frames is iterated, and each new frame that has less than 99% similarity with the previous saved frame (starting from the first) is saved into the `unique_frames` directory.  The structural similarity algorithm from `scikit-image` is used for this calculation.  There is currently commented-out code in this script that allows for additional debugging - displaying red-tinted "dissimilar" frames, as well as heatmaps of which portions of the frame have changed.
+The list of frames is iterated, and each new frame that has less than 99% similarity with the previous saved frame (starting from the first) is saved into the `unique_frames` directory.  The structural similarity algorithm from `scikit-image` is used for this calculation.  There is currently commented-out code in this script that allows for additional debugging - displaying heatmaps of which portions of the frame have changed.
 
 ### Displaying on e-Paper
 
