@@ -16,7 +16,7 @@ Hardware from:
 This very-slow-movie-player does a few things above what I've seen elsewhere, which are described below.  This project contains scripts to preprocess movie files into image files, select a meaningful subset of frames, and then display on an e-Paper display with configurable total and refresh times.  Movies played through this project are not played at a constant speed (although enough information is preserved to achieve this) - instead, minimizing screen refreshes needed to show meaningfully changed frames on a regular basis is prioritized.
 
 ### Offline Image Processing
-All image processing is done offline, which lets one comfortably use a small device like the Pi Zero, without running into performance issues.  This also reduces the storage required on the device itself.  A much larger selection of videos can be pre-loaded, or smaller memory cards can be used.
+All image processing is done offline, which lets one comfortably use a small device like the Pi Zero, without running into performance issues.  This also reduces the storage required on the device itself.  A much larger selection of videos can be pre-loaded, or smaller memory cards can be used.  This processing may take significant time, even on powerful desktop machines, so it is not recommended to run this on a low-power device like a Pi Zero - especially when experimenting with different settings.
 
 ### Frame Similarity Detection
 The refresh time on these e-Paper displays is significant (5-10 seconds), so avoiding useless screen refreshes is important (all black to all black, for example).  Frame-to-frame differences can be calculated, and frames that do not have significant changes can be ignored.
@@ -49,11 +49,13 @@ $ mkdir unique_frames
 $ python3 compare.py frames unique_frames 0.99
 ```
 
-The list of frames is iterated, and each new frame that has less than 99% similarity with the previous saved frame (starting from the first) is saved into the `unique_frames` directory.  The structural similarity algorithm from `scikit-image` is used for this calculation.
+The list of frames is iterated, and each new frame that has less than 99% similarity with the previous saved frame (starting from the first) is saved into the `unique_frames` directory.  The structural similarity algorithm from `scikit-image` is used for this calculation.  There is currently commented-out code in this script that allows for additional debugging - displaying red-tinted "dissimilar" frames, as well as heatmaps of which portions of the frame have changed.
 
 ### Displaying on e-Paper
 
 With a directory of relatively unique image frames, these can now be displayed to e-Paper with `display.py`.  A configuration file (sample in `vsmp.config.example`) named `vsmp.config` is read from the current working directory, to determine where image frames are located, how long between screen refreshes, and the total length of runtime desired.  A current frame counter file is specified, which holds the most recently displayed frame.  Each time the program starts, this file is consulted if it exists, and playback is resumed from that point.
+
+Be sure to copy the directory of unique frames to the Raspberry Pi device, customize the config file, and then simply run the script.
 
 ### Scheduling for Autorun
 
