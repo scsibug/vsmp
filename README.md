@@ -7,7 +7,7 @@ Inspired by:
 
 Hardware from:
 * [Waveshare](https://www.waveshare.com/) - E-Paper display
-  * I have used [7.5inch e-Paper HAT V2](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT), and [7.8inch e-Paper HAT](https://www.waveshare.com/wiki/7.8inch_e-Paper_HAT)
+  * I have used the [7.5inch e-Paper HAT V2](https://www.waveshare.com/wiki/7.5inch_e-Paper_HAT), and [7.8inch e-Paper HAT](https://www.waveshare.com/wiki/7.8inch_e-Paper_HAT)
 * [RaspberryPi](https://www.raspberrypi.org/) - Pi Zero W
   * Getting some headers is a good idea, for easily connecting the e-Paper HAT.
 
