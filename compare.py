@@ -32,7 +32,6 @@ prev_image = ""
 # Read a frame.  compare subsequent frames,
 # until some threshold is reached
 
-
 def mkframe(f):
     '''Frame data based on the frame count'''
     file_name = this_image_name = "{:08d}_bw.png".format(f)

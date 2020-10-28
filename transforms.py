@@ -1,3 +1,4 @@
+# Taken from https://gist.github.com/wchargin/d8eb0cbafc4d4479d004
 """A library for describing and applying affine transforms to PIL images."""
 import numpy as np
 import PIL.Image

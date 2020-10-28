@@ -13,7 +13,7 @@ Hardware from:
 
 ## Overview and Features
 
-This very-slow-movie-player does a few things above what I've seen elsewhere, which are described below.  This project contains scripts to preprocess movie files into image files, select a meaningful subset of frames, and then display on an e-Paper display with configurable total and refresh times.
+This very-slow-movie-player does a few things above what I've seen elsewhere, which are described below.  This project contains scripts to preprocess movie files into image files, select a meaningful subset of frames, and then display on an e-Paper display with configurable total and refresh times.  Movies played through this project are not played at a constant speed (although enough information is preserved to achieve this) - instead, minimizing screen refreshes needed to show meaningfully changed frames on a regular basis is prioritized.
 
 ### Offline Image Processing
 All image processing is done offline, which lets one comfortably use a small device like the Pi Zero, without running into performance issues.  This also reduces the storage required on the device itself.  A much larger selection of videos can be pre-loaded, or smaller memory cards can be used.
@@ -26,3 +26,41 @@ Controls for overall run time and time between refreshes, even after the movie h
 
 ### Autostart and Checkpointing
 Finally, autostart functionality through systemd services, and checkpointing to disk allows this to be a set-and-forget solution that does not need to be adjusted after being installed and powered up.
+
+## Walkthrough
+
+### Frame Extraction
+
+Begin by selecting a movie file to process.  The script `mov-to-frames.py` will convert a movie into a directory of PNG frames, given two user-specified timecodes (in seconds).  For example, to generate frames for minute 2 (120 seconds) to minute 125 (7500 seconds), saving the result into the `frames` directory, use this command:
+
+```
+$ mkdir frames
+$ python3 mov-to-frames.py movie.mp4 frames 120 7500
+```
+
+This results in downsampled frames (`800x480` is hardcoded in the script), that have been converted to black and white (with Floyd-Steinberg dithering) PNG images.
+
+### Structural Similarity
+
+Instead of storing and displaying every frame, frames that represent minimal change can be discarded using `compare.py`.  Frames that are sufficiently unique are copied to a new destination directory, run as follows:
+
+```
+$ mkdir unique_frames
+$ python3 compare.py frames unique_frames 0.99
+```
+
+The list of frames is iterated, and each new frame that has less than 99% similarity with the previous saved frame (starting from the first) is saved into the `unique_frames` directory.  The structural similarity algorithm from `scikit-image` is used for this calculation.
+
+### Displaying on e-Paper
+
+With a directory of relatively unique image frames, these can now be displayed to e-Paper with `display.py`.  A configuration file (sample in `vsmp.config.example`) named `vsmp.config` is read from the current working directory, to determine where image frames are located, how long between screen refreshes, and the total length of runtime desired.  A current frame counter file is specified, which holds the most recently displayed frame.  Each time the program starts, this file is consulted if it exists, and playback is resumed from that point.
+
+### Scheduling for Autorun
+
+The systemd service file `vsmp.service` provides an example of how the `display.py` script can be run automatically on system startup.  Install and enable this like any systemd service.
+
+```
+# cp vsmp.service /etc/systemd/system/
+# systemctl enable vsmp.service
+# systemctl start vsmp.service
+```
