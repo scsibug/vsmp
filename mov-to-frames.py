@@ -7,6 +7,7 @@ import ffmpeg
 import re
 import sys
 import time
+import tempfile
 
 def get_framerate(stream):
     fr = stream['avg_frame_rate']
@@ -66,7 +67,6 @@ print("Video Framerate: {}".format(framerate))
 # Output screen size
 width = 800 
 height = 480
-filename = "in-work.jpg"
 
 # desired output ratio is
 output_ratio = width / height
@@ -85,6 +85,8 @@ start_frame = int(round(int(start_time) * framerate,0))
 end_frame = int(round(int(end_time) * framerate,0))
 
 for f in range(start_frame, end_frame):
+    tf = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+    filename = tf.name
     msTimecode = ms_to_timecode(framecount_to_ms(framerate, f))
     generate_frame(input_vid, filename, msTimecode, width, height, scale_height)
     if (not os.path.exists(filename)):

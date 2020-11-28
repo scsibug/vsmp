@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, glob
 import shutil
 from skimage.transform import resize
 from imageio import imread, imwrite
@@ -34,6 +34,7 @@ prev_image = ""
 # Another approach (keyframe)
 # Read a frame.  compare subsequent frames,
 # until some threshold is reached
+pngCount = len(glob.glob1(image_dir,"*.png"))
 
 def mkframe(f):
     '''Frame data based on the frame count'''
@@ -48,7 +49,7 @@ prior_frame = None
 key_frame = None
 frame_count = 0
 key_count = 0
-for f in range(0,10000):
+for f in range(0,pngCount):
     frame_count += 1
     frame = mkframe(f)
     if (prior_frame==None):
